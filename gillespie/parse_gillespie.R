@@ -1,7 +1,7 @@
 
 # Parsing and plots for stochastic gillespie runs
 
-setwd('~/Documents/Dinner/fly eye/stochastic/gillespie')
+setwd('~/stochastic/gillespie')
 
 load_gillespie = function(filename,ntrials) {
   con = file(filename,'r') # open connection 
@@ -38,12 +38,12 @@ load_gillespie = function(filename,ntrials) {
 
 ## load relevant data ##
 tst = load_gillespie('results/yan_network.txt',3)
-pre_full = load_gillespie('results/yan_egfr_pre_full.txt',100)
-diff_full = load_gillespie('results/yan_egfr_diff_full.txt',100)
-pre_half = load_gillespie('results/yan_egfr_pre_half.txt',100)
-diff_half = load_gillespie('results/yan_egfr_diff_half.txt',100)
-pre_increase = load_gillespie('results/yan_egfr_pre_increase.txt',100)
-diff_increase = load_gillespie('results/yan_egfr_diff_increase.txt',100)
+#pre_full = load_gillespie('results/yan_egfr_pre_full.txt',100)
+#diff_full = load_gillespie('results/yan_egfr_diff_full.txt',100)
+#pre_half = load_gillespie('results/yan_egfr_pre_half.txt',100)
+#diff_half = load_gillespie('results/yan_egfr_diff_half.txt',100)
+#pre_increase = load_gillespie('results/yan_egfr_pre_increase.txt',100)
+#diff_increase = load_gillespie('results/yan_egfr_diff_increase.txt',100)
 
 ## plotting library things ##
 require(ggplot2)
