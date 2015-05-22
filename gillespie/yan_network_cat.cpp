@@ -392,7 +392,7 @@ int main(int argc, char* argv[]) {
       oss << "results/yan_network_pl" << j << ".txt";
       std::string results_file = oss.str();
 
-      for (int i = 0; i < 3; ++i){
+      for (int i = 0; i < 100; ++i){
         BasicGillespie BG(IC,times);
         yan_network_init(BG, prot_lifetime);
         std::cout << "running " << i << std::endl;
