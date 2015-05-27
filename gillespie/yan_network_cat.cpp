@@ -330,7 +330,7 @@ void yan_network_init(BasicGillespie &BG, double prot_lifetime) {
   
   // PntP2 phosphorylation
   double ERK_SCALE = 1.0; // low scale 0.3 high scale 2.0
-  std::function<double(double)> ERK_COURSE = [=](double t){return ERK_FUN(t)*ERK_SCALE;};
+  std::function<double(double)> ERK_COURSE = [=](double t){return ERK_PULSE(t)*ERK_SCALE;};
   BG.add_reaction(std::make_shared<TimePhosphorylation>("P2","P2P",ERK_COURSE,DEF_PRT_PHOSPHO,DEF_PRT_COPY/100));
   BG.add_pause(erk_start);
   // Mae:Yan phosphorylation
@@ -389,7 +389,7 @@ int main(int argc, char* argv[]) {
       std::cout << "Mean Protein Lifetime: " << prot_lifetime << std::endl;
 
       std::ostringstream oss;
-      oss << "results/yan_network_pl" << j << ".txt";
+      oss << "results/yan_network_ERK_pl" << j << ".txt";
       std::string results_file = oss.str();
 
       for (int i = 0; i < 100; ++i){

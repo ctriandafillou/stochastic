@@ -2,7 +2,14 @@ To Do
 
 ----05-22-15----
 
--run simulation with protein lifetimes loop longer (100 iterations)
--check out graphs and compare to previous
--start working on 
--figure out how to turn on EGFR signaling
+-run simulation with protein lifetimes loop longer (100 iterations) !
+-check out graphs and compare to previous !
+-figure out how to turn on EGFR signaling !
+
+
+----05-25-15----
+
+-run sim with pl and EGFR pulse !
+-make plots !
+-change EGFR pulse
+-change PntP1 levels

@@ -37,12 +37,18 @@ load_gillespie = function(filename,ntrials) {
 }
 
 ## load relevant data ##
-pl60 = load_gillespie('results/yan_network_pl60.txt',100)
-pl180 = load_gillespie('results/yan_network_pl180.txt',100)
-pl300 = load_gillespie('results/yan_network_pl300.txt',100)
-pl420 = load_gillespie('results/yan_network_pl420.txt',100)
-pl540 = load_gillespie('results/yan_network_pl540.txt',100)
-pl660 = load_gillespie('results/yan_network_pl660.txt',100)
+#pl60 = load_gillespie('results/yan_network_pl60.txt',100)
+#pl180 = load_gillespie('results/yan_network_pl180.txt',100)
+#pl300 = load_gillespie('results/yan_network_pl300.txt',100)
+#pl420 = load_gillespie('results/yan_network_pl420.txt',100)
+#pl540 = load_gillespie('results/yan_network_pl540.txt',100)
+#pl660 = load_gillespie('results/yan_network_pl660.txt',100)
+ERKpl60 = load_gillespie('results/yan_network_ERK_pl60.txt', 100)
+# ERKpl180 = load_gillespie('results/yan_network_ERK_pl180.txt', 100)
+# ERKpl300 = load_gillespie('results/yan_network_ERK_pl300.txt', 100)
+# ERKpl420 = load_gillespie('results/yan_network_ERK_pl420.txt', 100)
+# ERKpl540 = load_gillespie('results/yan_network_ERK_pl540.txt', 100)
+ERKpl660 = load_gillespie('results/yan_network_ERK_pl660.txt', 100)
 
 ## plotting library things ##
 require(ggplot2)
@@ -84,10 +90,10 @@ convert_concs = function(concentrations.mat) {
 }
 
 ### nicer plot functions ###
-plot_mean_course = function(concentrations.mat,outfile,plot_legend=F,trial=1) {
+plot_mean_course = function(concentrations.mat,outfile,plot_legend=T,trial=1) {
   bonus_concs.df = convert_concs(concentrations.mat)
-  species_toplot = c('YTotal','M_Y','M','mR7','P2P','P1')
-  species_names = c('Total Yan','Mae-Yan','Mae','miR-7','pPntP2','PntP1')
+  species_toplot = c('YTotal','M_Y','M','mR7','P2P','P1', 'P2')
+  species_names = c('Total Yan','Mae-Yan','Mae','miR-7','pPntP2','PntP1', 'P2')
   sub_conc.df = bonus_concs.df[,c(species_toplot,'times','trial')]
   sub_conc.mlt = melt(sub_conc.df,id.vars=c('times','trial'))
   sub_conc.summary = ddply(sub_conc.mlt[,c('times','variable','value')],c('times','variable'),
@@ -103,7 +109,7 @@ plot_mean_course = function(concentrations.mat,outfile,plot_legend=F,trial=1) {
   g = g + geom_line(data=trial_sub_conc.mlt,aes(times/3600,value,col=variable),size=0.7,alpha=0.5)
   ## axis ##
   g = g + scale_x_continuous(breaks=seq(0,60,10),limits=c(0,60))
-  g = g + scale_y_continuous(breaks=seq(0,600,100),limits=c(0,600))
+  g = g + scale_y_continuous(breaks=seq(0,650,100),limits=c(0,600))
   ## labels ##
   if (plot_legend) {
     g = g + scale_colour_discrete(breaks=species_toplot,labels=species_names)
@@ -127,8 +133,15 @@ plot_mean_course = function(concentrations.mat,outfile,plot_legend=F,trial=1) {
 }
 
 # plot mean courses
-plot_mean_course(pl60$concentrations.mat,'plots/mean_yan_pl60.pdf',trial=4)
-plot_mean_course(pl180$concentrations.mat,'plots/mean_yan_pl180.pdf',trial=4)
+#plot_mean_course(pl60$concentrations.mat,'plots/mean_yan_pl60.pdf',trial=4)
+plot_mean_course(ERKpl60$concentrations.mat,'plots/mean_yan_ERKpl60.pdf',trial=4)
+#plot_mean_course(pl180$concentrations.mat,'plots/mean_yan_pl180.pdf',trial=4)
+
+# plot_mean_course(ERKpl180$concentrations.mat,'plots/mean_yan_ERKpl180.pdf',trial=4)
+# plot_mean_course(ERKpl300$concentrations.mat,'plots/mean_yan_ERKpl300.pdf',trial=4)
+# plot_mean_course(ERKpl420$concentrations.mat,'plots/mean_yan_ERKpl420.pdf',trial=4)
+# plot_mean_course(ERKpl540$concentrations.mat,'plots/mean_yan_ERKpl540.pdf',trial=4)
+plot_mean_course(ERKpl660$concentrations.mat,'plots/mean_yan_ERKpl660.pdf',trial=4)
 
 #plot_mean_course(pre_full$concentrations.mat,'plots/mean_yan_egfr_pre_full_legend.pdf',trial=4,plot_legend=T)
 
