@@ -37,16 +37,16 @@ load_gillespie = function(filename,ntrials) {
 }
 
 ## load relevant data ##
-#pl60 = load_gillespie('results/yan_network_pl60.txt',100)
+pl60 = load_gillespie('results/yan_network_pl60.txt',100)
 #pl180 = load_gillespie('results/yan_network_pl180.txt',100)
 #pl300 = load_gillespie('results/yan_network_pl300.txt',100)
-#pl420 = load_gillespie('results/yan_network_pl420.txt',100)
+pl420 = load_gillespie('results/yan_network_pl420.txt',100)
 #pl540 = load_gillespie('results/yan_network_pl540.txt',100)
-#pl660 = load_gillespie('results/yan_network_pl660.txt',100)
+pl660 = load_gillespie('results/yan_network_pl660.txt',100)
 ERKpl60 = load_gillespie('results/yan_network_ERK_pl60.txt', 100)
 # ERKpl180 = load_gillespie('results/yan_network_ERK_pl180.txt', 100)
 # ERKpl300 = load_gillespie('results/yan_network_ERK_pl300.txt', 100)
-# ERKpl420 = load_gillespie('results/yan_network_ERK_pl420.txt', 100)
+ERKpl420 = load_gillespie('results/yan_network_ERK_pl420.txt', 100)
 # ERKpl540 = load_gillespie('results/yan_network_ERK_pl540.txt', 100)
 ERKpl660 = load_gillespie('results/yan_network_ERK_pl660.txt', 100)
 
@@ -134,23 +134,23 @@ plot_mean_course = function(concentrations.mat,outfile,plot_legend=T,trial=1) {
 
 # plot mean courses
 #plot_mean_course(pl60$concentrations.mat,'plots/mean_yan_pl60.pdf',trial=4)
-plot_mean_course(ERKpl60$concentrations.mat,'plots/mean_yan_ERKpl60.pdf',trial=4)
+#plot_mean_course(ERKpl60$concentrations.mat,'plots/mean_yan_ERKpl60.pdf',trial=4)
 #plot_mean_course(pl180$concentrations.mat,'plots/mean_yan_pl180.pdf',trial=4)
 
 # plot_mean_course(ERKpl180$concentrations.mat,'plots/mean_yan_ERKpl180.pdf',trial=4)
 # plot_mean_course(ERKpl300$concentrations.mat,'plots/mean_yan_ERKpl300.pdf',trial=4)
 # plot_mean_course(ERKpl420$concentrations.mat,'plots/mean_yan_ERKpl420.pdf',trial=4)
 # plot_mean_course(ERKpl540$concentrations.mat,'plots/mean_yan_ERKpl540.pdf',trial=4)
-plot_mean_course(ERKpl660$concentrations.mat,'plots/mean_yan_ERKpl660.pdf',trial=4)
+#plot_mean_course(ERKpl660$concentrations.mat,'plots/mean_yan_ERKpl660.pdf',trial=4)
 
 #plot_mean_course(pre_full$concentrations.mat,'plots/mean_yan_egfr_pre_full_legend.pdf',trial=4,plot_legend=T)
 
 ## plot mutant yan courses ##
-consolidate_mutants = function(mut_data,mut_names) {
+consolidate_lifetimes = function(life_data,life_names) {
   ytotal.df = data.frame(times=numeric(0),trial=numeric(0),YTotal=numeric(0),type=character(0))
-  for (i in 1:length(mut_data)) {
-    conc.df = convert_concs(mut_data[[i]]$concentrations.mat)
-    conc.df$type = mut_names[i]
+  for (i in 1:length(life_data)) {
+    conc.df = convert_concs(life_data[[i]]$concentrations.mat)
+    conc.df$type = life_names[i]
     ytotal.df = rbind(ytotal.df,conc.df[,c('times','trial','YTotal','type')])
   }
   return(ytotal.df)
@@ -159,12 +159,15 @@ consolidate_mutants = function(mut_data,mut_names) {
 #pre_ytotal.df = consolidate_mutants(list(pre_full,pre_half,pre_increase),c('WT','DECREASE','INCREASE'))
 #diff_ytotal.df = consolidate_mutants(list(diff_full,diff_half,diff_increase),c('WT','DECREASE','INCREASE'))
 
-plot_yquantiles = function(ytotal.df,outfile,plot_legend=F) {
+pl_ytotal.df = consolidate_lifetimes(list(pl60,pl420,pl660),c('Mean60','Mean420','Mean660'))
+erk_pl_ytotal.df = consolidate_lifetimes(list(ERKpl60, ERKpl420, ERKpl660),c('Mean60', 'Mean420', 'Mean660'))
+
+plot_yquantiles = function(ytotal.df,outfile,plot_legend=T) {
   ytotal.summary = ddply(ytotal.df,c('times','type'),summarise,
                          median=median(YTotal),low=quantile(YTotal,0.25),high=quantile(YTotal,0.75))
-  ytotal.summary$type = factor(ytotal.summary$type,c('WT','DECREASE','INCREASE'))
-  types = c('WT','DECREASE','INCREASE')
-  type_labels = c('1.0*dpERK','0.3*dpERK','2.0*dpERK')
+  ytotal.summary$type = factor(ytotal.summary$type,c('Mean60','Mean420','Mean660'))
+  types = c('Mean60','Mean420','Mean660')
+  type_labels = c('60','420','660')
   type_colors = c('blue','orange','red1')
   
   g = ggplot(ytotal.summary,aes(times/3600,median,col=type))
@@ -193,11 +196,11 @@ plot_yquantiles = function(ytotal.df,outfile,plot_legend=F) {
   # g = g + theme(panel.grid.major = element_line(size = 0.25, color = "grey"))
   g
   
-  ggsave(outfile)
+#  ggsave(outfile)
 }
 
-#plot_yquantiles(pre_ytotal.df,'plots/yquantiles_pre.pdf')
-#plot_yquantiles(diff_ytotal.df,'plots/yquantiles_diff.pdf')
+plot_yquantiles(pl_ytotal.df,'plots/yquantiles.pdf')
+plot_yquantiles(erk_pl_ytotal.df,'plots/yquantiles_ERK.pdf')
 # plot_yquantiles(pre_ytotal.df,'plots/yquantiles_pre_legend.pdf',plot_legend=T)
 
 plot_ycov = function(ytotal.df,outfile,plot_legend=F) {
