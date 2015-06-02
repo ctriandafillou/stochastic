@@ -38,6 +38,8 @@ load_gillespie = function(filename,ntrials) {
 pl300 = load_gillespie('results/yan_network_pl300.txt',100)
 ERKpl300 = load_gillespie('results/yan_network_ERK_pl300.txt', 100)
 
+ERKsub300 = load_gillespie('results/yan_subnetwork.txt', 100)
+
 ## plotting library things ##
 require(ggplot2)
 require(reshape2)
@@ -70,7 +72,7 @@ plot_circuit1_course = function(concentrations.mat,outfile,plot_legend=T,trial=1
   g = g + geom_line(data=trial_sub_conc.mlt,aes(times/3600,value,col=variable),size=0.7,alpha=0.5)
   ## axis ##
   g = g + scale_x_continuous(breaks=seq(0,60,10),limits=c(0,60))
-  g = g + scale_y_continuous(breaks=seq(0,650,100),limits=c(0,600))
+  g = g + scale_y_continuous(breaks=seq(0,800,100),limits=c(0,800))
   ## labels ##
   if (plot_legend) {
     g = g + scale_colour_discrete(breaks=species_toplot,labels=species_names)
@@ -94,3 +96,4 @@ plot_circuit1_course = function(concentrations.mat,outfile,plot_legend=T,trial=1
 }
 
 plot_circuit1_course(ERKpl300$concentrations.mat, 'plots/circuit1_ERKpl300.pdf', trial=4, plot_legend=T)
+plot_circuit1_course(ERKsub300$concentrations.mat, 'plots/circuit1_sub_ERK.pdf', trial=4, plot_legend=T)

@@ -21,5 +21,8 @@ target: yan_network_cat.cpp basic_gillespie.o
 testing: testing.cpp basic_gillespie.o
 	$(CC) $(CFLAGS) $(INCLUDE) testing.cpp basic_gillespie.o -o testing
 
+sub: yan_subnetwork.cpp basic_gillespie.o
+	$(CC) $(CFLAGS) $(INCLUDE) yan_subnetwork.cpp basic_gillespie.o -o ysub
+
 clean: 
 	rm -rf *.o testing yan *~
