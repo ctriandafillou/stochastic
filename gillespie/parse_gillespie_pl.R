@@ -196,7 +196,7 @@ plot_yquantiles = function(ytotal.df,outfile,plot_legend=T) {
   # g = g + theme(panel.grid.major = element_line(size = 0.25, color = "grey"))
   g
   
-#  ggsave(outfile)
+  ggsave(outfile)
 }
 
 plot_yquantiles(pl_ytotal.df,'plots/yquantiles.pdf')
